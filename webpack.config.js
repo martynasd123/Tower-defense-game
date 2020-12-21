@@ -11,9 +11,14 @@ module.exports = {
             options: {minimize: true}
           }
         ]
-      }
+      },
+      {
+        test: /\.css$/i,
+        use: ["style-loader", "css-loader"],
+      },
     ]
   },
+
   plugins: [
       new HtmlWebPackPlugin({
         template: "./src/index.html",

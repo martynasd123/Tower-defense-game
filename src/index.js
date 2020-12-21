@@ -1,27 +1,35 @@
-import {BoxGeometry, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, WebGLRenderer} from "three";
+import {DefaultLoadingManager, WebGLRenderer} from "three";
+import Core from "./game/Core";
+import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import './styles.css';
 
+//Finding the canvas element
 const canvas = document.querySelector('#frame');
-
+//Initializing WebGL renderer
 const renderer = new WebGLRenderer({canvas});
 
-const fov = 75;
-const aspect = 2;  // the canvas default
-const near = 0.1;
-const far = 5;
-const camera = new PerspectiveCamera(fov, aspect, near, far);
-camera.position.z = 2;
+const game = new Core();
 
-const scene = new Scene();
+//Initializing the loading manager
+const loadingManager = DefaultLoadingManager;
 
-const boxWidth = 1;
-const boxHeight = 1;
-const boxDepth = 1;
-const geometry = new BoxGeometry(boxWidth, boxHeight, boxDepth);
+loadingManager.onLoad = () => {
+  //Hiding the loader
+  document.querySelector('#loadingContainer').style.display = "none";
+  //Starting the actual game
+  game.init(renderer);
+};
 
-const material = new MeshBasicMaterial({color: 0x44aa88});
+//Specifying 3D models to load
+const modelsToLoad = {
+  cannon: {
+    path: './assets/models/Cannon.gltf'
+  },
+}
 
-const cube = new Mesh(geometry, material);
-
-scene.add(cube);
-
-renderer.render(scene, camera);
+const gltfLoader = new GLTFLoader(loadingManager);
+for (const model of Object.values(modelsToLoad)) {
+  gltfLoader.load(model.path, (gltf) => {
+    model.gltf = gltf;
+  });
+}
