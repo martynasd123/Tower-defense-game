@@ -9,7 +9,7 @@ export class CameraInfo extends Component {
     this.frustum = new Frustum();
   }
   update() {
-    const {camera} = globals;
+    const { camera } = globals;
     this.projScreenMatrix.multiplyMatrices(
         camera.projectionMatrix,
         camera.matrixWorldInverse);

@@ -7,10 +7,6 @@ export class Player extends Component{
 
   constructor(entity) {
     super(entity);
-
-    // entity.addComponent(Object3D, loadedModels.cannon.gltf.scene)
-    // entity.transform.add(new Mesh(new BoxGeometry(10, 10, 10), new MeshBasicMaterial({color: 0x44aa88})))
-    entity.transform.add(loadedModels.cannon.gltf.scene)
   }
 
   update() {

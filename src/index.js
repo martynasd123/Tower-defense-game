@@ -6,7 +6,10 @@ import './styles.css';
 //Finding the canvas element
 const canvas = document.querySelector('#frame');
 //Initializing WebGL renderer
-const renderer = new WebGLRenderer({canvas});
+const renderer = new WebGLRenderer({
+  antialias: true,
+  canvas
+});
 
 const game = new Core();
 
@@ -20,11 +23,15 @@ export const loadedModels = {
   cannon: {
     path: './assets/models/Cannon.gltf'
   },
+  tower: {
+    path: './assets/models/TowerModel.gltf'
+  },
 }
 
 loadingManager.onLoad = () => {
   //Hiding the loader
   document.querySelector('#loadingContainer').style.display = "none";
+  document.querySelector('#frame').style.display = "block";
   //Starting the actual game
   game.init(renderer);
   render(Date.now)

@@ -1,49 +1,95 @@
-import {Color, PerspectiveCamera, PointLight, Scene} from "three";
+import {Camera, Color, DirectionalLight, PerspectiveCamera, PointLight, Scene, Vector3, WebGLRenderer} from "three";
 import {EntityManager} from "../engine/core/EntityManager";
 import {CameraInfo} from "./component/CameraInfo";
 import {Player} from "./component/Player";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
+import {InputManager} from "../engine/core/InputManager";
+import {CameraControls} from "./component/CameraControls";
+import {loadedModels} from "../index";
 
-export const globals = {}
+export const globals = {
+
+  /**
+   * Primary camera for this game
+   */
+  camera: null,
+
+  /**
+   * Global CameraInfo component instance
+   */
+  cameraInfo: PerspectiveCamera || null,
+
+  /**
+   * Global input manager that manages key events.
+   */
+  // inputManager: new InputManager([
+  //   {
+  //     keyCode: 38,
+  //     name: 'up'
+  //   },
+  //   {
+  //     keyCode: 40,
+  //     name: 'down'
+  //   }
+  // ]),
+
+};
+
 export default function Core() {
 
-  this.entityManager = new EntityManager();
+  const entityManager = new EntityManager();
 
-  this.scene = new Scene();
-  this.scene.background = new Color('white');
 
-  this.setUpCamera = function () {
+  let renderer = null;
+
+  const scene = new Scene();
+  scene.background = new Color('white');
+
+  this._setUpCamera = function () {
     const fov = 45;
     const aspect = 2;
     const near = 0.1;
     const far = 1000;
     globals.camera = new PerspectiveCamera(fov, aspect, near, far);
-    globals.camera.position.set(0, 0, 10);
   }
 
-  this.init = function (renderer) {
-    this.renderer = renderer;
-    this.setUpCamera();
+  this.init = function(GLRenderer) {
+    renderer = GLRenderer;
 
+    this._setUpCamera();
+    // {
+    //   const entity = entityManager.createEntity(globals.camera, 'camera info');
+    //   globals.cameraInfo = entity.addComponent(CameraInfo);
+    // }
     {
-      const entity = this.entityManager.createEntity(this.scene, 'player');
-      entity.addComponent(Player);
+      const playerEntity = entityManager.createEntity(scene, 'player');
+      playerEntity.transform.add(loadedModels.cannon.gltf.scene)
+      const cannonPos = [0,12.2,0];
+      playerEntity.transform.position.set(...cannonPos)
+      globals.camera.position.set(...cannonPos).add(new Vector3(5,5,0));
+      playerEntity.addComponent(Player);
+      globals.player = playerEntity;
     }
     {
-      const entity = this.entityManager.createEntity(this.scene, 'point light');
-      entity.transform.add(new PointLight(new Color("white"), 5))
+      const entity = entityManager.createEntity(scene, 't1');
+      entity.transform.add(loadedModels.tower.gltf.scene)
+      entity.transform.position.add(new Vector3(0,0,0))
+    }
+    {
+      const entity = entityManager.createEntity(scene, 'Camera controls manager');
+      entity.addComponent(CameraControls, globals.camera, renderer.domElement);
+    }
+    {
+      const entity = entityManager.createEntity(scene, 'Directional light');
+      entity.transform.add(new DirectionalLight(new Color("white"), 1))
       entity.transform.position.set(0,0,40);
     }
-    {
-      const entity = this.entityManager.createEntity(globals.camera, 'camera');
-      globals.cameraInfo = entity.addComponent(CameraInfo);
-    }
-
   }
 
   this.render = function () {
-    this.entityManager.update();
-    this.renderer.render(this.scene, globals.camera);
+    // globals.inputManager.update();
+    entityManager.update();
+    renderer.render(scene, globals.camera);
   }
 
   this.updateRendererDisplaySize = function (width, height) {

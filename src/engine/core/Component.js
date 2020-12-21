@@ -1,16 +1,18 @@
 /**
- * A base component class
+ * A base component class.
  */
 export class Component {
+
   /**
-   * Constructs a component with a givent parent gameObject
-   * @param entity the parent gameObject
+   * Constructs a component with a given parent entity
+   * @param entity The parent entity
    */
   constructor(entity) {
     this.entity = entity;
   }
 
-  update() {
-
-  }
+  /**
+   * Update function to be overridden
+   */
+  update() { }
 }
