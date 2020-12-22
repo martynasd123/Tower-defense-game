@@ -1,4 +1,4 @@
-import {DefaultLoadingManager, WebGLRenderer} from "three";
+import {CubeTextureLoader, DefaultLoadingManager, WebGLRenderer} from "three";
 import Core, {globals} from "./game/Core";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import './styles.css';
@@ -27,6 +27,16 @@ export const loadedModels = {
     path: './assets/models/TowerModel.gltf'
   },
 }
+
+const loader = new CubeTextureLoader(loadingManager);
+export const skybox = loader.load([
+  './assets/textures/skybox/TropicalSunnyDay_px.jpg',
+  './assets/textures/skybox/TropicalSunnyDay_nx.jpg',
+  './assets/textures/skybox/TropicalSunnyDay_py.jpg',
+  './assets/textures/skybox/TropicalSunnyDay_ny.jpg',
+  './assets/textures/skybox/TropicalSunnyDay_pz.jpg',
+  './assets/textures/skybox/TropicalSunnyDay_nz.jpg',
+]);
 
 loadingManager.onLoad = () => {
   //Hiding the loader

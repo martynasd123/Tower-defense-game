@@ -5,7 +5,7 @@ import {Player} from "./component/Player";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {InputManager} from "../engine/core/InputManager";
 import {CameraControls} from "./component/CameraControls";
-import {loadedModels} from "../index";
+import {loadedModels, skybox} from "../index";
 
 export const globals = {
 
@@ -43,7 +43,6 @@ export default function Core() {
   let renderer = null;
 
   const scene = new Scene();
-  scene.background = new Color('white');
 
   this._setUpCamera = function () {
     const fov = 45;
@@ -55,6 +54,8 @@ export default function Core() {
 
   this.init = function(GLRenderer) {
     renderer = GLRenderer;
+
+    scene.background = skybox;
 
     this._setUpCamera();
     // {
