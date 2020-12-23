@@ -16,7 +16,7 @@
     "nodes" : [
         {
             "mesh" : 0,
-            "name" : "Cube.005",
+            "name" : "Base",
             "scale" : [
                 0.4727623462677002,
                 0.4727623462677002,
@@ -25,7 +25,7 @@
         },
         {
             "mesh" : 1,
-            "name" : "Cube.001",
+            "name" : "Pipe",
             "rotation" : [
                 0,
                 0,

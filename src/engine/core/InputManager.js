@@ -3,9 +3,16 @@
  */
 export class InputManager {
 
-  constructor() {
+  constructor(initialKeys = {}) {
     this.keys = {};
-    this.keyMap = new Map();
+    this.keyMap = new Map()
+
+    Object.keys(initialKeys).forEach((key) => {
+      this.keys[key] = { down: false, justPressed: false };
+      initialKeys[key].forEach(keyCode => {
+        this.keyMap[keyCode] = key;
+      })
+    })
 
     const setKey = (keyName, pressed) => {
       const keyState = this.keys[keyName];
@@ -14,7 +21,7 @@ export class InputManager {
     };
 
     const setKeyFromKeyCode = (keyCode, pressed) => {
-      const keyName = this.keyMap.get(keyCode);
+      const keyName = this.keyMap[keyCode];
       if (!keyName) {
         return;
       }

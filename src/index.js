@@ -48,6 +48,9 @@ loadingManager.onLoad = () => {
 };
 
 const gltfLoader = new GLTFLoader(loadingManager);
+renderer.gammaOutput = true;
+//We can safely ignore this deprecation warning. More info: https://discourse.threejs.org/t/gltfexported-model-is-way-darker/6686
+renderer.gammaFactor = 2.2;
 for (const model of Object.values(loadedModels)) {
   gltfLoader.load(model.path, (gltf) => {
     model.gltf = gltf;

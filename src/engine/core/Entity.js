@@ -14,8 +14,8 @@ export class Entity{
   constructor(parent, name) {
     this.name = name;
     this.components = [];
-    this.transform = new Object3D();
-    parent.add(this.transform);
+    this.visual = new Object3D();
+    parent.add(this.visual);
   }
 
   /**

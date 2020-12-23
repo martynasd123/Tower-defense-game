@@ -1,11 +1,21 @@
-import {Camera, Color, DirectionalLight, PerspectiveCamera, PointLight, Scene, Vector3, WebGLRenderer} from "three";
+import {
+  AmbientLight,
+  Camera,
+  Color,
+  DirectionalLight,
+  PerspectiveCamera,
+  PointLight,
+  Scene,
+  Vector3,
+  WebGLRenderer
+} from "three";
 import {EntityManager} from "../engine/core/EntityManager";
 import {CameraInfo} from "./component/CameraInfo";
-import {Player} from "./component/Player";
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {InputManager} from "../engine/core/InputManager";
 import {CameraControls} from "./component/CameraControls";
 import {loadedModels, skybox} from "../index";
+import {CannonController} from "./component/CannonController";
 
 export const globals = {
 
@@ -22,23 +32,20 @@ export const globals = {
   /**
    * Global input manager that manages key events.
    */
-  // inputManager: new InputManager([
-  //   {
-  //     keyCode: 38,
-  //     name: 'up'
-  //   },
-  //   {
-  //     keyCode: 40,
-  //     name: 'down'
-  //   }
-  // ]),
+  inputManager: new InputManager({
+    up: [
+      'ArrowUp'
+    ],
+    down: [
+      'ArrowDown'
+    ],
+  }),
 
 };
 
 export default function Core() {
 
   const entityManager = new EntityManager();
-
 
   let renderer = null;
 
@@ -52,7 +59,7 @@ export default function Core() {
     globals.camera = new PerspectiveCamera(fov, aspect, near, far);
   }
 
-  this.init = function(GLRenderer) {
+  this.init = function (GLRenderer) {
     renderer = GLRenderer;
 
     scene.background = skybox;
@@ -63,18 +70,17 @@ export default function Core() {
     //   globals.cameraInfo = entity.addComponent(CameraInfo);
     // }
     {
-      const playerEntity = entityManager.createEntity(scene, 'player');
-      playerEntity.transform.add(loadedModels.cannon.gltf.scene)
-      const cannonPos = [0,12.2,0];
-      playerEntity.transform.position.set(...cannonPos)
-      globals.camera.position.set(...cannonPos).add(new Vector3(5,5,0));
-      playerEntity.addComponent(Player);
+      const playerEntity = entityManager.createEntity(scene, 'Cannon');
+      playerEntity.visual.add(loadedModels.cannon.gltf.scene);
+      const cannonPos = [0, 12.3, 0];
+      playerEntity.visual.position.set(...cannonPos)
+      globals.camera.position.set(...cannonPos).add(new Vector3(5, 5, 0));
+      playerEntity.addComponent(CannonController);
       globals.player = playerEntity;
     }
     {
-      const entity = entityManager.createEntity(scene, 't1');
-      entity.transform.add(loadedModels.tower.gltf.scene)
-      entity.transform.position.add(new Vector3(0,0,0))
+      const entity = entityManager.createEntity(scene, 'Tower');
+      entity.visual.add(loadedModels.tower.gltf.scene);
     }
     {
       const entity = entityManager.createEntity(scene, 'Camera controls manager');
@@ -82,19 +88,24 @@ export default function Core() {
     }
     {
       const entity = entityManager.createEntity(scene, 'Directional light');
-      entity.transform.add(new DirectionalLight(new Color("white"), 1))
-      entity.transform.position.set(0,0,40);
+      entity.visual.add(new DirectionalLight(new Color("#abe0f7"), 0.5))
+      entity.visual.position.set(0, 5, 10);
+    }
+    {
+      const entity = entityManager.createEntity(scene, 'Ambient light');
+      entity.visual.add(new AmbientLight(new Color("white"), 0.05));
+      entity.visual.position.set(0, 5, 10);
     }
   }
 
   this.render = function () {
-    // globals.inputManager.update();
+    globals.inputManager.update();
     entityManager.update();
     renderer.render(scene, globals.camera);
   }
 
   this.updateRendererDisplaySize = function (width, height) {
-    const { camera } = globals;
+    const {camera} = globals;
     camera.aspect = width / height;
     camera.updateProjectionMatrix();
   }

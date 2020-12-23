@@ -13,7 +13,7 @@ export class CameraControls extends Component{
     const orbitControls = new OrbitControls( camera, domElement );
 
     const { player } = globals;
-    const {x, y, z} = player.transform.getWorldPosition();
+    const {x, y, z} = player.visual.getWorldPosition();
     orbitControls.target.set(x,y,z).add(new Vector3(0,1,0));
     orbitControls.maxPolarAngle = Math.PI * 0.5;
     orbitControls.minPolarAngle = -Math.PI * 0.5;
