@@ -1,17 +1,13 @@
 import {
   AmbientLight,
-  Camera,
   Color,
   DirectionalLight,
   PerspectiveCamera,
-  PointLight,
   Scene,
   Vector3,
-  WebGLRenderer
 } from "three";
 import {EntityManager} from "../engine/core/EntityManager";
 import {CameraInfo} from "./component/CameraInfo";
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {InputManager} from "../engine/core/InputManager";
 import {CameraControls} from "./component/CameraControls";
 import {loadedModels, skybox} from "../index";
@@ -65,16 +61,21 @@ export default function Core() {
     scene.background = skybox;
 
     this._setUpCamera();
-    // {
-    //   const entity = entityManager.createEntity(globals.camera, 'camera info');
-    //   globals.cameraInfo = entity.addComponent(CameraInfo);
-    // }
+    {
+      const entity = entityManager.createEntity(globals.camera, 'camera info');
+      globals.cameraInfo = entity.addComponent(CameraInfo);
+    }
+
     {
       const playerEntity = entityManager.createEntity(scene, 'Cannon');
       playerEntity.visual.add(loadedModels.cannon.gltf.scene);
+
+      //Positioning the cannon to be on top of the tower
       const cannonPos = [0, 12.3, 0];
       playerEntity.visual.position.set(...cannonPos)
       globals.camera.position.set(...cannonPos).add(new Vector3(5, 5, 0));
+
+      //Adding relevant components
       playerEntity.addComponent(CannonController);
       globals.player = playerEntity;
     }
@@ -92,6 +93,7 @@ export default function Core() {
       entity.visual.position.set(0, 5, 10);
     }
     {
+      //Adding ambient light to make shadows slightly lighter
       const entity = entityManager.createEntity(scene, 'Ambient light');
       entity.visual.add(new AmbientLight(new Color("white"), 0.05));
       entity.visual.position.set(0, 5, 10);
