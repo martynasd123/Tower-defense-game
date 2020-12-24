@@ -9,7 +9,7 @@ import {
 import {EntityManager} from "../engine/core/EntityManager";
 import {CameraInfo} from "./component/CameraInfo";
 import {InputManager} from "../engine/core/InputManager";
-import {CameraControls} from "./component/CameraControls";
+import {CameraControlsManager} from "./component/CameraControlsManager";
 import {loadedModels, skybox} from "../index";
 import {CannonController} from "./component/CannonController";
 
@@ -30,11 +30,17 @@ export const globals = {
    */
   inputManager: new InputManager({
     up: [
-      'ArrowUp'
+      'ArrowUp',
     ],
     down: [
-      'ArrowDown'
+      'ArrowDown',
     ],
+    right: [
+      'ArrowRight',
+    ],
+    left: [
+      'ArrowLeft',
+    ]
   }),
 
 };
@@ -85,7 +91,7 @@ export default function Core() {
     }
     {
       const entity = entityManager.createEntity(scene, 'Camera controls manager');
-      entity.addComponent(CameraControls, globals.camera, renderer.domElement);
+      entity.addComponent(CameraControlsManager, globals.camera, renderer.domElement);
     }
     {
       const entity = entityManager.createEntity(scene, 'Directional light');

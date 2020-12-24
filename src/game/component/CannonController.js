@@ -2,7 +2,7 @@ import {Component} from "../../engine/core/Component";
 import {globals} from "../Core";
 
 const MOVEMENT_SPEED_VERTICAL = 0.005;
-const MOVEMENT_SPEED_HORIZONTAL = 0.005;
+const MOVEMENT_SPEED_HORIZONTAL = 0.01;
 
 /**
  * A component, that is responsible for cannon controls.
@@ -22,5 +22,10 @@ export class CannonController extends Component{
       this.pipeMesh.rotation.set(0,0,this.pipeMesh.rotation.z - MOVEMENT_SPEED_VERTICAL)
     else if(inputManager.keys.down.down)
       this.pipeMesh.rotation.set(0,0,this.pipeMesh.rotation.z + MOVEMENT_SPEED_VERTICAL)
+
+    if(inputManager.keys.right.down)
+      this.entity.visual.rotation.set(0,this.entity.visual.rotation.y - MOVEMENT_SPEED_HORIZONTAL, 0)
+    else if(inputManager.keys.left.down)
+      this.entity.visual.rotation.set(0,this.entity.visual.rotation.y + MOVEMENT_SPEED_HORIZONTAL, 0)
   }
 }

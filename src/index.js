@@ -1,7 +1,12 @@
 import {CubeTextureLoader, DefaultLoadingManager, WebGLRenderer} from "three";
+import * as THREE from "three";
 import Core, {globals} from "./game/Core";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 import './styles.css';
+import CameraControls from 'camera-controls';
+
+//Necessary initialization for camera controls library to work
+CameraControls.install( { THREE: THREE } );
 
 //Finding the canvas element
 const canvas = document.querySelector('#frame');
