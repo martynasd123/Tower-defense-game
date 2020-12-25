@@ -18,12 +18,12 @@ export const globals = {
   /**
    * Primary camera for this game
    */
-  camera: null,
+  camera: PerspectiveCamera || null,
 
   /**
    * Global CameraInfo component instance
    */
-  cameraInfo: PerspectiveCamera || null,
+  cameraInfo: CameraInfo || null,
 
   /**
    * Global input manager that manages key events.
@@ -40,18 +40,26 @@ export const globals = {
     ],
     left: [
       'ArrowLeft',
-    ]
+    ],
+    shoot: [
+      'Space',
+    ],
   }),
 
+  /**
+   * Class that manages all the entities
+   */
+  entityManager: new EntityManager(),
+
+  /**
+   * Scene in which all objects are rendered
+   */
+  scene: new Scene(),
 };
 
 export default function Core() {
 
-  const entityManager = new EntityManager();
-
   let renderer = null;
-
-  const scene = new Scene();
 
   this._setUpCamera = function () {
     const fov = 45;
@@ -64,6 +72,8 @@ export default function Core() {
   this.init = function (GLRenderer) {
     renderer = GLRenderer;
 
+    const { entityManager, scene } = globals;
+
     scene.background = skybox;
 
     this._setUpCamera();
@@ -71,7 +81,6 @@ export default function Core() {
       const entity = entityManager.createEntity(globals.camera, 'camera info');
       globals.cameraInfo = entity.addComponent(CameraInfo);
     }
-
     {
       const playerEntity = entityManager.createEntity(scene, 'Cannon');
       playerEntity.visual.add(loadedModels.cannon.gltf.scene);
@@ -90,7 +99,7 @@ export default function Core() {
       entity.visual.add(loadedModels.tower.gltf.scene);
     }
     {
-      const entity = entityManager.createEntity(scene, 'Camera controls manager');
+      const entity = entityManager.createEntity(scene, 'Camera controls');
       entity.addComponent(CameraControlsManager, globals.camera, renderer.domElement);
     }
     {
@@ -107,9 +116,9 @@ export default function Core() {
   }
 
   this.render = function () {
+    globals.entityManager.update();
     globals.inputManager.update();
-    entityManager.update();
-    renderer.render(scene, globals.camera);
+    renderer.render(globals.scene, globals.camera);
   }
 
   this.updateRendererDisplaySize = function (width, height) {
