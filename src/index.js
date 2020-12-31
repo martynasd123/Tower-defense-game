@@ -29,7 +29,10 @@ export const loadedModels = {
     path: './assets/models/Cannon.gltf'
   },
   tower: {
-    path: './assets/models/TowerModel.gltf'
+    path: './assets/models/Tower.gltf'
+  },
+  terrain: {
+    path: './assets/models/Terrain.gltf'
   },
 }
 

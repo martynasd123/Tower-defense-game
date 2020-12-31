@@ -12,6 +12,7 @@ import {InputManager} from "../engine/core/InputManager";
 import {CameraControlsManager} from "./component/CameraControlsManager";
 import {loadedModels, skybox} from "../index";
 import {CannonController} from "./component/CannonController";
+import {SkeletonUtils} from "three/examples/jsm/utils/SkeletonUtils";
 
 export const globals = {
 
@@ -57,6 +58,10 @@ export const globals = {
   scene: new Scene(),
 };
 
+const towerPositions = [new Vector3(25,15,25), new Vector3(-25,15,-25), new Vector3(-25,15,25), new Vector3(25,15,-25) ]
+
+const controllableTower = 0;
+
 export default function Core() {
 
   let renderer = null;
@@ -81,37 +86,48 @@ export default function Core() {
       const entity = entityManager.createEntity(globals.camera, 'camera info');
       globals.cameraInfo = entity.addComponent(CameraInfo);
     }
-    {
-      const playerEntity = entityManager.createEntity(scene, 'Cannon');
-      playerEntity.visual.add(loadedModels.cannon.gltf.scene);
+    towerPositions.forEach((towerPosition, index) => {
+      const tower = entityManager.createEntity(scene, `Tower-${index + 1}`);
+      tower.visual.add(SkeletonUtils.clone(loadedModels.tower.gltf.scene));
 
-      //Positioning the cannon to be on top of the tower
+      const playerEntity = entityManager.createEntity(scene, `Cannon-${index + 1}`);
+
+      //Cannon is a child of tower
+      tower.visual.attach(playerEntity.visual);
+
+      playerEntity.visual.add(SkeletonUtils.clone(loadedModels.cannon.gltf.scene));
+
       const cannonPos = [0, 12.3, 0];
       playerEntity.visual.position.set(...cannonPos)
       globals.camera.position.set(...cannonPos).add(new Vector3(5, 5, 0));
 
+      tower.visual.position.set(towerPosition.x, towerPosition.y, towerPosition.z);
+
       //Adding relevant components
-      playerEntity.addComponent(CannonController);
-      globals.player = playerEntity;
-    }
-    {
-      const entity = entityManager.createEntity(scene, 'Tower');
-      entity.visual.add(loadedModels.tower.gltf.scene);
-    }
+      if(index === controllableTower) {
+        playerEntity.addComponent(CannonController);
+        globals.player = playerEntity;
+      }
+    })
+
     {
       const entity = entityManager.createEntity(scene, 'Camera controls');
       entity.addComponent(CameraControlsManager, globals.camera, renderer.domElement);
     }
     {
       const entity = entityManager.createEntity(scene, 'Directional light');
-      entity.visual.add(new DirectionalLight(new Color("#abe0f7"), 0.5))
+      entity.visual.add(new DirectionalLight(new Color("#abe0f7"), 0.6))
       entity.visual.position.set(0, 5, 10);
     }
     {
       //Adding ambient light to make shadows slightly lighter
       const entity = entityManager.createEntity(scene, 'Ambient light');
-      entity.visual.add(new AmbientLight(new Color("white"), 0.05));
+      entity.visual.add(new AmbientLight(new Color("white"), 0.2));
       entity.visual.position.set(0, 5, 10);
+    }
+    {
+      const entity = entityManager.createEntity(scene, 'Terrain');
+      entity.visual.add(loadedModels.terrain.gltf.scene);
     }
   }
 
