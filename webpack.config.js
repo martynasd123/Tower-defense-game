@@ -23,7 +23,8 @@ module.exports = {
         use: [
           {loader: 'babel-loader',
             options: {
-              presets: ['@babel/react']
+              presets: ['@babel/preset-env', '@babel/react' ],
+              plugins: ['@babel/plugin-proposal-class-properties', "@babel/plugin-transform-runtime"]
             }}
           ],
       },
@@ -37,6 +38,17 @@ module.exports = {
       new HtmlWebPackPlugin({
         template: "./src/index.html",
         filename: "./index.html"
-      })
-  ]
+      }),
+    
+  ],
+  devServer: {
+      historyApiFallback: true,
+      hot: true,
+      proxy: {
+        '/api': { 
+          target: 'http://localhost:2567', 
+          changeOrigin : true,
+         },
+      },
+  }
 }

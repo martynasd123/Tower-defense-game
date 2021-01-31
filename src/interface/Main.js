@@ -1,23 +1,23 @@
 import React from "react";
 import {
-    BrowserRouter as Router,
+    Router,
     Switch,
     Route,
 } from "react-router-dom";
-import Game from "./screens/Game";
-import Lobby from "./screens/Lobby";
-import Room from "./screens/Room";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Login from "./screens/Login";
+import { createBrowserHistory } from "history";
+import AuthWrapper from "../game/component/AuthWrapper";
+import Root from "./Root";
 
-export default function Main(){
+
+export default () => {
     return (
-        <Router>
-            <div>
-                <Switch>
-                    <Route exact path="/" component={Lobby} />
-                    <Route path="/game" component={Game} />
-                    <Route path="/room/:roomId?" component={Room} />
-                </Switch>
-            </div>
+        <Router history={createBrowserHistory()}>
+            <Switch>
+                <Route exact path="/login" component={Login} />
+                <Route component={AuthWrapper(Root, Login)}/>
+            </Switch>
         </Router>
     );
 }
