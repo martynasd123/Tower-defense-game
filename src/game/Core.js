@@ -10,9 +10,9 @@ import {EntityManager} from "../engine/core/EntityManager";
 import {CameraInfo} from "./component/CameraInfo";
 import {InputManager} from "../engine/core/InputManager";
 import {CameraControlsManager} from "./component/CameraControlsManager";
-import {loadedModels, skybox} from "../index";
 import {CannonController} from "./component/CannonController";
 import {SkeletonUtils} from "three/examples/jsm/utils/SkeletonUtils";
+import Assets from "./Assets";
 
 export const globals = {
 
@@ -64,6 +64,8 @@ const controllableTower = 0;
 
 export default function Core() {
 
+  const { models, skyboxes } = Assets;
+
   let renderer = null;
 
   this._setUpCamera = function () {
@@ -79,7 +81,7 @@ export default function Core() {
 
     const { entityManager, scene } = globals;
 
-    scene.background = skybox;
+    scene.background = skyboxes.sky.skybox;
 
     this._setUpCamera();
     {
@@ -88,14 +90,14 @@ export default function Core() {
     }
     towerPositions.forEach((towerPosition, index) => {
       const tower = entityManager.createEntity(scene, `Tower-${index + 1}`);
-      tower.visual.add(SkeletonUtils.clone(loadedModels.tower.gltf.scene));
+      tower.visual.add(SkeletonUtils.clone(models.tower.gltf.scene));
 
       const playerEntity = entityManager.createEntity(scene, `Cannon-${index + 1}`);
 
       //Cannon is a child of tower
       tower.visual.attach(playerEntity.visual);
 
-      playerEntity.visual.add(SkeletonUtils.clone(loadedModels.cannon.gltf.scene));
+      playerEntity.visual.add(SkeletonUtils.clone(models.cannon.gltf.scene));
 
       const cannonPos = [0, 12.3, 0];
       playerEntity.visual.position.set(...cannonPos)
@@ -127,7 +129,7 @@ export default function Core() {
     }
     {
       const entity = entityManager.createEntity(scene, 'Terrain');
-      entity.visual.add(loadedModels.terrain.gltf.scene);
+      entity.visual.add(models.terrain.gltf.scene);
     }
   }
 
