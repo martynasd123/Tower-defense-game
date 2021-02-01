@@ -13,13 +13,15 @@ class LoginForm extends React.Component {
         const result = login({email, password});
         console.log(result)
     }
-
+    
     onChange = (e) => {
         const { name, value } = e.target;
         this.setState({
             [name]: value,
         });
     }
+
+
     render() {
         return (
             <form onSubmit={this.onSubmit}>

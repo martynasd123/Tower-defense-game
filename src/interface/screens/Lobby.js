@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import RoomListItem from "../components/RoomListItem";
+import { Modal } from "react-bootstrap";
 import RoomListHeader from "../components/RoomListHeader";
 import {BsArrowCounterclockwise} from "react-icons/bs";
 import RoomTableSpinner from "../components/RoomTableSpinner";
@@ -8,12 +9,14 @@ import {Button} from "react-bootstrap";
 import {SnackbarContext} from "../contexts/SnackbarProvider";
 import {useHistory} from "react-router";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
+import RoomForm from "../components/RoomForm";
 
 export default function Lobby() {
 
     const { serverManager } = useContext(ServerManagerContext)
     const [rooms, setRooms] = useState([]);
     const [roomsLoading, setRoomsLoading] = useState(false);
+    const [showFormModal, setShowFormModal] = useState(false);
 
     const { addAlert } = useContext(SnackbarContext);
 
@@ -22,20 +25,28 @@ export default function Lobby() {
     const refreshRooms = () => {
         setRoomsLoading(true);
         serverManager.listRooms().then((rooms) => {
+            console.log(rooms);
             setRooms(rooms);
         }).catch((error) => {
             addAlert({title: "Error", message: "Failed to connect to server. Refresh this page to try again"});
         }).finally(() => {
             setRoomsLoading(false);
         })
-    }
+    };
+
+    const onCreateRoom = async (roomData) => {
+        setShowFormModal(false);
+        const room = await serverManager.createRoom(roomData);
+        history.push(`/room/${room.id}`)
+    };
 
     //Fetching rooms initially
     useEffect(refreshRooms, [])
 
     const onRoomJoin = (room) => {
         history.push(`/room/${room.roomId}`);
-    }
+    };
+
 
     const tableBody = () => {
         if(roomsLoading){
@@ -47,7 +58,7 @@ export default function Lobby() {
                 return (<RoomListItem key={room.roomId} room={room} onRoomJoin={onRoomJoin}/>);
             });
         }
-    }
+    };
 
     return (
         <div className="container">
@@ -64,10 +75,26 @@ export default function Lobby() {
                     <BsArrowCounterclockwise size={16}/>
                     {' '} Refresh room list
                 </Button>
+                <Button variant="secondary" onClick={() => setShowFormModal(true)}>
+                    create new room
+                </Button>
                 <Button variant="secondary" onClick={() => {history.push('/game')}}>
                     Magic button
                 </Button>
             </div>
+
+            <Modal
+                onHide={() => setShowFormModal(false)}
+                show={showFormModal}
+                id="show-form-modal"
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title> Room </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <RoomForm onCreateRoom={onCreateRoom}/>
+                </Modal.Body>
+            </Modal>
 
         </div>
     )
