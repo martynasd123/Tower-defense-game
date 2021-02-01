@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useContext} from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import RoomListItem from "../components/RoomListItem";
 import { Modal } from "react-bootstrap";
 import RoomListHeader from "../components/RoomListHeader";
@@ -7,11 +6,10 @@ import {BsArrowCounterclockwise} from "react-icons/bs";
 import RoomTableSpinner from "../components/RoomTableSpinner";
 import {Button} from "react-bootstrap";
 import {SnackbarContext} from "../contexts/SnackbarProvider";
-import {useHistory} from "react-router";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 import RoomForm from "../components/RoomForm";
 
-export default function Lobby() {
+export default function Lobby({ history }) {
 
     const { serverManager } = useContext(ServerManagerContext)
     const [rooms, setRooms] = useState([]);
@@ -19,8 +17,6 @@ export default function Lobby() {
     const [showFormModal, setShowFormModal] = useState(false);
 
     const { addAlert } = useContext(SnackbarContext);
-
-    const history = useHistory();
 
     const refreshRooms = () => {
         setRoomsLoading(true);
@@ -37,14 +33,15 @@ export default function Lobby() {
     const onCreateRoom = async (roomData) => {
         setShowFormModal(false);
         const room = await serverManager.createRoom(roomData);
-        history.push(`/room/${room.id}`)
+        history.push(`/rooms/${room.id}`);
     };
 
     //Fetching rooms initially
     useEffect(refreshRooms, [])
 
-    const onRoomJoin = (room) => {
-        history.push(`/room/${room.roomId}`);
+    const onRoomJoin = async (room) => {
+        await serverManager.joinRoomById(room.roomId);
+        history.push(`/rooms/${room.roomId}`);
     };
 
 

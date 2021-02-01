@@ -1,7 +1,13 @@
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const path = require('path');
 
 module.exports = {
   mode: "development",
+  entry: path.resolve(__dirname, 'src/index'),
+  output: {
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: "/"
+  },
   module: {
     rules: [
       {
@@ -42,13 +48,6 @@ module.exports = {
     
   ],
   devServer: {
-      historyApiFallback: true,
-      hot: true,
-      proxy: {
-        '/api': { 
-          target: 'http://localhost:2567', 
-          changeOrigin : true,
-         },
-      },
+      historyApiFallback: true
   }
 }
