@@ -3,13 +3,16 @@ import Button from "./Button";
 import { login } from "../api/index";
 
 class ChatBox extends React.Component {
+    
     state = {
         message: ""
     }
     onSubmit = (e) => {
-        e.preventDefault();
-        
+        e.preventDefault(); 
+        this.props.onSendMessage(this.state.message);
+        this.setState({message: ""});
     }
+    
     
     onChange = (e) => {
         const { name, value } = e.target;
@@ -24,15 +27,16 @@ class ChatBox extends React.Component {
         return (
             <div>
                 <div className="chat-container">
-                    {messages?.map(m => (
-                        <li className="message">{`${m.date} `} <span className="author">{m.username}:</span> {` ${m.text}`}</li>
+                    {messages?.map((m, index) => (
+                        <li key={index} className="message">{`${m.time} `} <span className="author">{m.username}:</span> {` ${m.message}`}</li>
                     ))}
                 </div>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group">
-                        <textarea
+                        <input
                             type="text"
                             name="message"
+                            value={this.state.message}
                             className="form-control"
                             onChange={this.onChange}
                             required

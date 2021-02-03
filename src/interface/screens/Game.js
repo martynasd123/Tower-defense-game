@@ -75,7 +75,6 @@ export default function Game() {
                 }}>
 
             </canvas>
-            safasf
         </div>
     )
 }

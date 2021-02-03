@@ -30,3 +30,19 @@ li {
 .chat-container {
     padding-bottom: 20px;
 }
+
+.main-padding {
+    padding: 15px 30px;
+}
+
+@media (min-width: 1200px) {
+    div.container, div.container-lg, div.container-md, div.container-sm, div.container-xl {
+        max-width: 75%;
+    }
+}
+
+
+.container_main {
+    margin-top: 20px;
+    background-color: white;
+}

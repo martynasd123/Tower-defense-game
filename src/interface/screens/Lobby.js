@@ -8,6 +8,8 @@ import {Button} from "react-bootstrap";
 import {SnackbarContext} from "../contexts/SnackbarProvider";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 import RoomForm from "../components/RoomForm";
+import Card from "../components/Card";
+import MainContainer from "../components/MainContainer";
 
 export default function Lobby({ history }) {
 
@@ -58,41 +60,40 @@ export default function Lobby({ history }) {
     };
 
     return (
-        <div className="container">
-            <table style={{tableLayout: 'fixed'}} className="table">
-                <thead>
-                <RoomListHeader/>
-                </thead>
-                <tbody>
-                    {tableBody()}
-                </tbody>
-            </table>
-            <div>
-                <Button variant="secondary" onClick={refreshRooms}>
-                    <BsArrowCounterclockwise size={16}/>
-                    {' '} Refresh room list
-                </Button>
-                <Button variant="secondary" onClick={() => setShowFormModal(true)}>
-                    create new room
-                </Button>
-                <Button variant="secondary" onClick={() => {history.push('/game')}}>
-                    Magic button
-                </Button>
-            </div>
+        <MainContainer py="3" px="4" background>
+                <table style={{tableLayout: 'fixed'}} className="table">
+                    <thead>
+                    <RoomListHeader/>
+                    </thead>
+                    <tbody>
+                        {tableBody()}
+                    </tbody>
+                </table>
+                <div>
+                    <Button variant="secondary" onClick={refreshRooms}>
+                        <BsArrowCounterclockwise size={16}/>
+                        {' '} Refresh room list
+                    </Button>
+                    <Button variant="secondary" onClick={() => setShowFormModal(true)}>
+                        create new room
+                    </Button>
+                    <Button variant="secondary" onClick={() => {history.push('/game')}}>
+                        Magic button
+                    </Button>
+                </div>
 
-            <Modal
-                onHide={() => setShowFormModal(false)}
-                show={showFormModal}
-                id="show-form-modal"
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title> Room </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <RoomForm onCreateRoom={onCreateRoom}/>
-                </Modal.Body>
-            </Modal>
-
-        </div>
+                <Modal
+                    onHide={() => setShowFormModal(false)}
+                    show={showFormModal}
+                    id="show-form-modal"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title> Room </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <RoomForm onCreateRoom={onCreateRoom}/>
+                    </Modal.Body>
+                </Modal>
+        </MainContainer>
     )
 }

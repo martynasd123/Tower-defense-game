@@ -11,7 +11,7 @@ import AuthWrapper from "../game/component/AuthWrapper";
 import Root from "./Root";
 import { SnackbarProvider } from "./contexts/SnackbarProvider";
 import { ServerManagerProvider } from "./contexts/ServerManagerProvider";
-
+import "./style.css";
 
 const App = () => (
     <SnackbarProvider>

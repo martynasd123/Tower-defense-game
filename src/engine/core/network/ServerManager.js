@@ -59,6 +59,14 @@ export default class ServerManager{
         this.room.onStateChange(func);
     }
 
+    onMessage (keyValue, func) {
+        this.room.onMessage(keyValue, func);
+    }
+
+    send(type, data) {
+        this.room.send(type, data);
+    }
+
     async createRoom(roomData) {
         const room = await this.client.create("game_room", this.addAuth(roomData));
         this.room = room;
