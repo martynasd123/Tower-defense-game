@@ -21,6 +21,20 @@ export default function Room({ location, history }){
         console.log(playerList.map(p=>p.id));
         setRoomPlayers(playerList);
         console.log(state);
+
+
+
+        // Game state tests
+        const entities = Array.from(state.gameState.entities.$items, ([key, value]) => value);
+        console.log(entities);
+        entities.forEach(ent => {
+            console.log({
+                parent: ent.parent,
+                visual: ent.visual,
+                components: ent?.components,
+                pitch: ent?.components?.canonController?.pitch,
+            })
+        })
         setRoomState({
             title: state?.title,
             max_players: state?.maxPlayers,
