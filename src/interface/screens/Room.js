@@ -35,6 +35,9 @@ export default function Room({ location, history }){
                 pitch: ent?.components?.canonController?.pitch,
             })
         })
+
+        const jsonState = JSON.parse(JSON.stringify(state))
+        console.log("Warmup seconds", jsonState.warmupTimeSeconds);
         setRoomState({
             title: state?.title,
             max_players: state?.maxPlayers,
@@ -50,7 +53,7 @@ export default function Room({ location, history }){
     const onStartGameBroadcast = () => {
         console.log("Start game broadcast");
         // Reroute to game
-        history.push(`/rooms/${ roomId }/game`);
+       // history.push(`/rooms/${ roomId }/game`);
     }
     
     const onMessage = (data) => {
