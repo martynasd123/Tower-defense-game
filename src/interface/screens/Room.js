@@ -18,26 +18,32 @@ export default function Room({ location, history }){
     const onStateChange = (state) => {
         const playerMap = state.playerMap.$items;
         const playerList = Array.from(playerMap, ([key, value]) => value);
-        console.log(playerList.map(p=>p.id));
+        console.log("old players", roomPlayers);
+        const newPlayers = playerList.filter(p => roomPlayers.findIndex(p2=>p2.id == p.id) === -1);
+        console.log("NEW PLAYERS", newPlayers);
+
         setRoomPlayers(playerList);
         console.log(state);
 
 
 
         // Game state tests
-        const entities = Array.from(state.gameState.entities.$items, ([key, value]) => value);
-        console.log(entities);
-        entities.forEach(ent => {
-            console.log({
-                parent: ent.parent,
-                visual: ent.visual,
-                components: ent?.components,
-                pitch: ent?.components?.canonController?.pitch,
-            })
-        })
+        //const entities = Array.from(state.gameState.entities.$items, ([key, value]) => value);
+        //console.log(entities);
+        // entities.forEach(ent => {
+        //     console.log({
+        //         parent: ent.parent,
+        //         visual: ent.visual,
+        //         components: ent?.components,
+        //         pitch: ent?.components?.canonController?.pitch,
+        //     })
+        // })
 
         const jsonState = JSON.parse(JSON.stringify(state))
+        console.log(jsonState);
         console.log("Warmup seconds", jsonState.warmupTimeSeconds);
+        console.log("Turn time seconds", jsonState?.gameState?.turnTime);
+        console.log("Player turn player index", jsonState?.gameState?.playerTurnIndex);
         setRoomState({
             title: state?.title,
             max_players: state?.maxPlayers,
@@ -57,6 +63,8 @@ export default function Room({ location, history }){
     }
     
     const onMessage = (data) => {
+        console.log(roomPlayers);
+        console.log(roomState);
         setRoomMessages(msgs => [...msgs, data]);
     };
 
