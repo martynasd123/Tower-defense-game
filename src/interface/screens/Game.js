@@ -1,16 +1,21 @@
-import React, {useEffect, useRef} from "react";
+import React, {useContext, useEffect, useRef} from "react";
 import Assets from "../../game/Assets";
 import * as THREE from "three";
 import {PrepareLoadingManager} from "../../game/util/AssetUtils";
 import {WebGLRenderer} from "three";
 import Core, {globals} from "../../game/Core";
 import CameraControls from "camera-controls";
+import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 
 export default function Game() {
 
     const canvas = useRef(null);
+    const {serverManager} = useContext(ServerManagerContext);
 
     useEffect(() => {
+        if(serverManager == null || canvas == null)
+            return;
+
         const loadingManager = PrepareLoadingManager(Assets);
 
         //Necessary initialization for camera controls library to work
@@ -59,11 +64,11 @@ export default function Game() {
 
         loadingManager.onLoad = () => {
             //Starting the actual game
-            game.init(renderer);
+            game.init(renderer, serverManager);
             render(Date.now)
         };
 
-    }, [canvas]);
+    }, [canvas, serverManager]);
 
     return (
         <div>

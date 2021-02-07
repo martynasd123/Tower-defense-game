@@ -49,6 +49,7 @@ export default class ServerManager{
             localStorage.setItem("session_id", room.sessionId);
             localStorage.setItem("room_id", room.id);
             this.room = room;
+
             return room;
        // } catch(e) {
        //     return null;

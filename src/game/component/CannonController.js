@@ -39,6 +39,7 @@ export class CannonController extends Component {
   update() {
     const {inputManager} = globals;
 
+    /*
     const boundRotation = (rotation) => {
       return Math.max(
           Math.PI * 2 / 360 * -MAX_VERTICAL_ROTATION_DEGREES,
@@ -58,6 +59,10 @@ export class CannonController extends Component {
       this.entity.visual.rotation.set(0, this.entity.visual.rotation.y - MOVEMENT_SPEED_HORIZONTAL, 0)
     else if (inputManager.keys.left.down)
       this.entity.visual.rotation.set(0, this.entity.visual.rotation.y + MOVEMENT_SPEED_HORIZONTAL, 0)
+    */
+
+    this.pipeMesh.rotation.set(0,0, this.getRemoteValue('pitch'));
+    this.entity.visual.rotation.set(0,this.getRemoteValue('yaw'), 0);
 
     if(inputManager.keys.shoot.justPressed){
       this.shoot();

@@ -39,6 +39,17 @@ export class SafeArray {
   }
 
   /**
+   * Queues the element to be removed from array
+   * @param predicate Predicate, which determines which element to remove
+   */
+  removeByPredicate(predicate) {
+    this.forEach((element) => {
+      if(predicate(element))
+        this.remove(element);
+    })
+  }
+
+  /**
    * Loops through the array.
    * Maintains a version of array, that has been observed at the moment of calling this function.
    * This means that elements, which were added asynchronously
@@ -55,6 +66,20 @@ export class SafeArray {
       fn(element);
     }
     this._removeQueued();
+  }
+
+  /**
+   * Works similarly to forEach, except this is used to find element
+   * @param predicate the predicate to find element with
+   */
+  find(predicate){
+    let found = null;
+    this.forEach((element) => {
+      if(predicate(element)) {
+        found = element;
+      }
+    })
+    return found;
   }
 
   _addQueued() {

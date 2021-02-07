@@ -11,8 +11,12 @@ export class Component {
     this.entity = entity;
   }
 
+  getRemoteValue(key){
+    return this.entity.getComponentStateValue(this.constructor.name, key);
+  }
+
   /**
    * Update function to be overridden
    */
-  update() { }
+  update() {}
 }

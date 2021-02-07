@@ -15,21 +15,18 @@ export class CameraControlsManager extends Component {
   setCameraPosition(enableTransition) {
     const worldPos = new Vector3();
     const {x, y, z} = this.pipe.getWorldPosition(worldPos);
-    this.cameraControls.rotateTo(globals.player.visual.rotation.y + Math.PI / 2,
+    this.cameraControls.rotateTo(this.player.visual.rotation.y + Math.PI / 2,
         -this.pipe.rotation.z + Math.PI * 0.3, enableTransition);
     this.cameraControls.setTarget(x, y, z, enableTransition);
   }
 
-  constructor(entity, camera, domElement) {
+  constructor(entity, domElement) {
     super(entity);
 
-    const {player} = globals;
+    const { camera } = globals;
 
     //Creating an instance of CameraControls
     this.cameraControls = new CameraControls(camera, domElement);
-
-    //Retrieving main player's cannon
-    this.pipe = player.visual.getObjectByName("Pipe");
 
     this.isCameraMoving = false;
 
@@ -40,13 +37,22 @@ export class CameraControlsManager extends Component {
     this.cameraControls.addEventListener('sleep', () => {
       this.isCameraMoving = false;
     });
-
-    //Setting camera position initially
-    this.setCameraPosition(false);
   }
 
   update() {
     const {inputManager} = globals;
+
+    const player = this.getRemoteValue("player");
+
+    if(this.player == null || this.player !== player){
+      this.player = player;
+
+      //Retrieving main player's cannon
+      this.pipe = this.player.visual.getObjectByName("Pipe");
+
+      //Setting camera position initially
+      this.setCameraPosition(false);
+    }
 
     this.cameraControls.update(globals.deltaTime);
 
