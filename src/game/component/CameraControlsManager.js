@@ -62,7 +62,7 @@ export class CameraControlsManager extends Component {
             inputManager.keys.up.down ||
             inputManager.keys.right.down ||
             inputManager.keys.left.down)) {
-      this.setCameraPosition(true);
+      //this.setCameraPosition(true);
     }
 
   }

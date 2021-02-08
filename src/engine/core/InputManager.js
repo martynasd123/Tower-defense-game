@@ -8,11 +8,9 @@ export class InputManager {
     this.keyMap = new Map()
 
     Object.keys(initialKeys).forEach((key) => {
-      this.keys[key] = { down: false, justPressed: false };
-      initialKeys[key].forEach(keyCode => {
-        this.keyMap[keyCode] = key;
-      })
-    })
+      this.keys[key] = { down: false, justPressed: false, value: initialKeys[key].value };
+      this.keyMap[initialKeys[key].keyCode] = key;
+    });
 
     const setKey = (keyName, pressed) => {
       const keyState = this.keys[keyName];
@@ -29,6 +27,7 @@ export class InputManager {
     };
 
     window.addEventListener('keydown', (e) => {
+      console.log("Pressed", e.code);
       setKeyFromKeyCode(e.code, true);
     });
     window.addEventListener('keyup', (e) => {
@@ -40,12 +39,19 @@ export class InputManager {
       this.keys[name] = { down: false, justPressed: false };
       this.keyMap.set(keyCode, name);
   }
-
+  
   update() {
     for (const keyState of Object.values(this.keys)) {
       if (keyState.justPressed) {
         keyState.justPressed = false;
       }
     }
+  }
+
+  getPressedKeysValues() {
+    return Object
+            .values(this.keys)
+            .filter(key => key.down)
+            .map(key => key.value);
   }
 }

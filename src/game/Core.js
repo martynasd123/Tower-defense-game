@@ -31,21 +31,26 @@ export const globals = {
    * Global input manager that manages key events.
    */
   inputManager: new InputManager({
-    up: [
-      'ArrowUp',
-    ],
-    down: [
-      'ArrowDown',
-    ],
-    right: [
-      'ArrowRight',
-    ],
-    left: [
-      'ArrowLeft',
-    ],
-    shoot: [
-      'Space',
-    ],
+    up: {
+      keyCode: 'KeyW',
+      value: 2,
+    },
+    down: {
+      keyCode: 'KeyS',
+      value: 3,
+    },
+    right: {
+      keyCode: 'KeyD',
+      value: 1,
+    },
+    left: {
+      keyCode: 'KeyA',
+      value: 0,
+    },
+    shoot: {
+      keyCode: 'Space',
+      value: 4,
+    },
   }),
 
   /**
@@ -62,10 +67,6 @@ export const globals = {
 
   serverManager: ServerManager || null,
 };
-
-const towerPositions = [new Vector3(25,15,25), new Vector3(-25,15,-25), new Vector3(-25,15,25), new Vector3(25,15,-25) ]
-
-const controllableTower = 0;
 
 export default function Core() {
 
@@ -97,7 +98,7 @@ export default function Core() {
       const stateParsed = JSON.parse(JSON.stringify(state)).gameState;
       entityManager.updateState(stateParsed);
       receivedGameState = true;
-    })
+    });
 
     this._setUpCamera();
   }
@@ -108,6 +109,10 @@ export default function Core() {
 
     globals.entityManager.update();
     globals.inputManager.update();
+    const pressedValues = globals.inputManager.getPressedKeysValues();
+    if (pressedValues.length > 0) {
+      globals.serverManager.send("player_input", pressedValues);
+    }
     renderer.render(globals.scene, globals.camera);
   }
 
