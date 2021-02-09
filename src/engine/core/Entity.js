@@ -49,9 +49,8 @@ export class Entity{
   }
 
   syncComponents(components){
-
     const componentsToRemove = [];
-
+    
     this.components.forEach((component) => {
       const compName = Object.keys(ComponentName).find((key) => { return component instanceof ComponentName[key]});
       if(components[compName] == null)
@@ -69,7 +68,7 @@ export class Entity{
 
       const componentType = ComponentName[component];
       if(componentType == null){
-        console.log('unknown component type', componentType);
+        console.log('unknown component type', component, ComponentName);
         return;
       }
       let params = [];

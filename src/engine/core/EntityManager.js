@@ -3,7 +3,7 @@ import {Entity} from "./Entity";
 import {globals} from "../../game/Core";
 import Assets from "../../game/Assets";
 import {SkeletonUtils} from "three/examples/jsm/utils/SkeletonUtils";
-import {AmbientLight, Color, DirectionalLight} from "three";
+import {AmbientLight, Color, DirectionalLight, Mesh, MeshBasicMaterial, SphereGeometry} from "three";
 
 /**
  * A wrapper class to manage a set of entities.
@@ -69,13 +69,16 @@ export class EntityManager {
     entities.forEach((entity) => {
 
       const ent = this.findEntityByName(entity.name);
-
+ 
       if(ent == null){
         //Entity does not exist. Creating a new one, and adding relevant components
         const entityNew = this.createEntity(this.parseRef(entity.parent), entity.name);
 
-        if(entity.visual != null){
+        if(entity.visual !== null && entity.visual !== undefined){
           entityNew.visual.add(this.parseRef(entity.visual));
+        } else {
+          // Super dumb, change this later xd
+          entityNew.visual.add(new Mesh(new SphereGeometry(0.2), new MeshBasicMaterial({color: new Color("gray")})));
         }
         const { x, y, z } = entity.position;
         entityNew.visual.position.set(x, y, z)

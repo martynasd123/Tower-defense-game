@@ -60,7 +60,7 @@ export class CannonController extends Component {
     this.yaw = yaw;
 
     if(inputManager.keys.shoot.justPressed){
-      this.shoot();
+      //this.shoot();
     }
   }
 }

@@ -27,7 +27,6 @@ export class InputManager {
     };
 
     window.addEventListener('keydown', (e) => {
-      console.log("Pressed", e.code);
       setKeyFromKeyCode(e.code, true);
     });
     window.addEventListener('keyup', (e) => {

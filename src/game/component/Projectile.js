@@ -2,12 +2,12 @@ import {Component} from "../../engine/core/Component";
 
 export default class Projectile extends Component{
 
-  constructor(entity, speed) {
+  constructor(entity, vector) {
     super(entity);
-    this.speed = speed;
+    this.vector = vector;
   }
 
   update() {
-    this.entity.visual.position.add(this.speed);
+    this.entity.visual.position.add(this.vector);
   }
 }
