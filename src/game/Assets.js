@@ -25,6 +25,12 @@ const Assets = {
             ],
             skybox: null,
         }
+    },
+    fonts: {
+        roboto_regular: {
+            path: '/assets/fonts/roboto_regular.json',
+            font: ''
+        }
     }
 }
 

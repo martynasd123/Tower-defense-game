@@ -2,6 +2,7 @@ import {Component} from "../../engine/core/Component";
 import {globals} from "../Core";
 import {Color, Euler, Mesh, MeshBasicMaterial, Quaternion, Scene, SphereGeometry, Vector3} from "three";
 import Projectile from "./Projectile";
+import {CameraControlsManager} from "./CameraControlsManager";
 
 const MOVEMENT_SPEED_VERTICAL = 0.005;
 const MOVEMENT_SPEED_HORIZONTAL = 0.01;
@@ -39,30 +40,24 @@ export class CannonController extends Component {
   update() {
     const {inputManager} = globals;
 
-    /*
-    const boundRotation = (rotation) => {
-      return Math.max(
-          Math.PI * 2 / 360 * -MAX_VERTICAL_ROTATION_DEGREES,
-          Math.min(
-              Math.PI * 2 / 360 * MIN_VERTICAL_ROTATION_DEGREES,
-              rotation
-          )
-      );
+    const pitch = this.getRemoteValue('pitch');
+    const yaw = this.getRemoteValue('yaw');
+
+    this.pipeMesh.rotation.set(0,0, pitch);
+    this.entity.visual.rotation.set(0,yaw, 0);
+
+    if((this.pitch != null && this.pitch !== pitch) || (this.yaw != null && this.yaw !== yaw)){
+      const cameraControlsEntity = this.entity.entityManager.findEntityByName('cameraControls')
+      if(cameraControlsEntity != null){
+          const cameraControlsManager =cameraControlsEntity.getComponent(CameraControlsManager);
+          if(cameraControlsManager != null && cameraControlsManager.player === this.entity){
+            cameraControlsManager.setCameraPosition(true);
+          }
+      }
     }
 
-    if (inputManager.keys.up.down)
-      this.pipeMesh.rotation.set(0, 0, boundRotation(this.pipeMesh.rotation.z - MOVEMENT_SPEED_VERTICAL));
-    else if (inputManager.keys.down.down)
-      this.pipeMesh.rotation.set(0, 0, boundRotation(this.pipeMesh.rotation.z + MOVEMENT_SPEED_VERTICAL));
-
-    if (inputManager.keys.right.down)
-      this.entity.visual.rotation.set(0, this.entity.visual.rotation.y - MOVEMENT_SPEED_HORIZONTAL, 0)
-    else if (inputManager.keys.left.down)
-      this.entity.visual.rotation.set(0, this.entity.visual.rotation.y + MOVEMENT_SPEED_HORIZONTAL, 0)
-    */
-
-    this.pipeMesh.rotation.set(0,0, this.getRemoteValue('pitch'));
-    this.entity.visual.rotation.set(0,this.getRemoteValue('yaw'), 0);
+    this.pitch = pitch;
+    this.yaw = yaw;
 
     if(inputManager.keys.shoot.justPressed){
       this.shoot();

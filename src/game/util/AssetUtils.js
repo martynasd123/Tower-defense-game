@@ -1,4 +1,4 @@
-import {CubeTextureLoader, DefaultLoadingManager} from "three";
+import {CubeTextureLoader, DefaultLoadingManager, FontLoader} from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
 
 /**
@@ -22,6 +22,14 @@ export function PrepareLoadingManager(assets){
     for (const skybox of Object.values(assets.skyboxes)) {
         skyboxLoader.load(skybox.paths, (cubeTexture) => {
             skybox.skybox = cubeTexture;
+        });
+    }
+
+    //Loading fonts
+    const fontLoader = new FontLoader();
+    for (const font of Object.values(assets.fonts)) {
+        fontLoader.load(font.path, (loadedFont) => {
+            font.font = loadedFont;
         });
     }
 

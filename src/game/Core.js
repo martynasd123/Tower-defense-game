@@ -1,17 +1,10 @@
 import {
-  AmbientLight,
-  Color,
-  DirectionalLight,
   PerspectiveCamera,
   Scene,
-  Vector3,
 } from "three";
 import {EntityManager} from "../engine/core/EntityManager";
 import {CameraInfo} from "./component/CameraInfo";
 import {InputManager} from "../engine/core/InputManager";
-import {CameraControlsManager} from "./component/CameraControlsManager";
-import {CannonController} from "./component/CannonController";
-import {SkeletonUtils} from "three/examples/jsm/utils/SkeletonUtils";
 import Assets from "./Assets";
 import ServerManager from "../engine/core/network/ServerManager";
 

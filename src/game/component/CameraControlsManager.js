@@ -56,14 +56,5 @@ export class CameraControlsManager extends Component {
 
     this.cameraControls.update(globals.deltaTime);
 
-    //Moving camera when cannon is moving
-    if (!this.isCameraMoving &&
-        (inputManager.keys.down.down ||
-            inputManager.keys.up.down ||
-            inputManager.keys.right.down ||
-            inputManager.keys.left.down)) {
-      //this.setCameraPosition(true);
-    }
-
   }
 }
