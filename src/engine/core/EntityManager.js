@@ -89,6 +89,7 @@ export class EntityManager {
       }else{
         if(entity.components != null)
           ent.syncComponents(entity.components);
+        ent.visual = this.parseRef(ent.visual)
         ent.visual.position.set(entity.position.x, entity.position.y, entity.position.z);
       }
     })

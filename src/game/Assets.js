@@ -8,6 +8,26 @@ const Assets = {
             path: '/assets/models/Tower.gltf',
             gltf: null,
         },
+        tower_4_hp: {
+            path: '/assets/models/TowerDamaged1.gltf',
+            gltf: null,
+        },
+        tower_3_hp: {
+            path: '/assets/models/TowerDamaged2.gltf',
+            gltf: null,
+        },
+        tower_2_hp: {
+            path: '/assets/models/TowerDamaged3.gltf',
+            gltf: null,
+        },
+        tower_1_hp: {
+            path: '/assets/models/TowerDamaged4.gltf',
+            gltf: null,
+        },
+        tower_0_hp: {
+            path: '/assets/models/TowerDamaged4.gltf',
+            gltf: null,
+        },
         terrain: {
             path: '/assets/models/Terrain.gltf',
             gltf: null,

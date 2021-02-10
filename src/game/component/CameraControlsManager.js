@@ -2,6 +2,7 @@ import {Component} from "../../engine/core/Component";
 import {globals} from "../Core";
 import CameraControls from 'camera-controls';
 import {Vector3} from "three";
+import {CannonController} from "./CannonController";
 
 /**
  * Component, responsible for controlling the camera movement.
