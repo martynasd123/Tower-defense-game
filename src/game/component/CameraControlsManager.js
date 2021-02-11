@@ -24,7 +24,6 @@ export class CameraControlsManager extends Component {
       this.cameraControls.rotateTo(this.entity_to_follow.visual.rotation.y + Math.PI / 2,
           -this.pipe.rotation.z + Math.PI * 0.3, enableTransition);
     }
-    this.cameraControls.setTarget(x, y, z, enableTransition);
   }
 
   constructor(entity, domElement) {
@@ -58,7 +57,15 @@ export class CameraControlsManager extends Component {
       this.setCameraPosition(false);
     }
 
+    const target = new Vector3();
+    this.cameraControls.getTarget(target)
+    const {x, y, z} = entity.visual.position;
+    if(x !== target.x || y !== target.y || z !== target.z) {
+      this.cameraControls.setTarget(x, y, z, false);
+    }
+
     this.cameraControls.update(globals.deltaTime);
+
 
   }
 }
