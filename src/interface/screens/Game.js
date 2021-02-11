@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useRef} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import Assets from "../../game/Assets";
 import * as THREE from "three";
 import {PrepareLoadingManager} from "../../game/util/AssetUtils";
@@ -13,13 +13,44 @@ export default function Game({ history }) {
     
     const canvas = useRef(null);
     const {serverManager} = useContext(ServerManagerContext);
+    
     const onGameEnd = () => {
         console.log("onGameEnd Called");
         history.push(`/rooms/${roomId}/end`);
     }
+
+    const [playerTurnIndex, setPlayerTurnIndex] = useState(null);
+    const [turnTime, setTurnTime] = useState(null);
+    const [players, setPlayers] = useState([]);
+    const [bigTextVisible, setBigTextVisible] = useState(false)
+    const [bigText, setBigText] = useState("");
+
+    const onRoomStateChanged = (state) => {
+        const stateParsed = JSON.parse(JSON.stringify(state)).gameState;
+        setPlayerTurnIndex(stateParsed.playerTurnIndex);
+        setTurnTime(stateParsed.turnTime)
+        setPlayers(stateParsed.players);
+    }
+
+    const showBigText = (text) => {
+        setBigText(text);
+        setBigTextVisible(true);
+        setTimeout(() => {
+            setBigTextVisible(false);
+        }, 3000)
+    }
+
+    useEffect(() => {
+        if(players.length === 0)
+            return;
+        showBigText(`${players[playerTurnIndex].authUser.username}'s turn`)
+    }, [playerTurnIndex])
+
     useEffect(() => {
         if(serverManager == null || canvas == null)
             return;
+
+        serverManager.onRoomStateChange(onRoomStateChanged)
 
         const loadingManager = PrepareLoadingManager(Assets);
 
@@ -85,6 +116,21 @@ export default function Game({ history }) {
                 }}>
 
             </canvas>
+
+            <div style={{position: 'absolute', top: 10, left: 10}}>
+                {players.map((player, index) => {
+                    if(playerTurnIndex == index)
+                        return <h1 style={{color: 'red'}} key={player.authUser.id}>{player.authUser.username}</h1>
+                    else
+                        return <h2 key={player.authUser.id}>{player.authUser.username}</h2>
+                })}
+            </div>
+            {bigTextVisible && <div style={{position: 'absolute', bottom: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+                <h1 style={{color: 'white', fontSize: 80}}>{bigText}</h1>
+            </div>}
+            {turnTime != null && <div style={{position: 'absolute', bottom: 10, left: 10}}>
+                <h2 style={{color: 'red'}}>{turnTime} sec. left</h2>
+            </div>}
         </div>
     )
 }

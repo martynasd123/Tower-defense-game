@@ -35,6 +35,8 @@
     "colyseus": "^0.14.6",
     "colyseus.js": "^0.14.1",
     "history": "^4.10.1",
+    "i": "^0.3.6",
+    "npm": "^7.5.3",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-dom": "^17.0.1",
@@ -42,7 +44,8 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "style-loader": "^2.0.0",
-    "three": "^0.123.0"
+    "three": "^0.123.0",
+    "three-ui": "^1.1.1"
   },
   "babel": {
     "presets": [

@@ -25,7 +25,7 @@ const Assets = {
             gltf: null,
         },
         tower_0_hp: { //Defeated tower (For now same model as 1HP)
-            path: '/assets/models/TowerDamaged4.gltf',
+            path: '/assets/models/TowerDestroyed.gltf',
             gltf: null,
         },
         terrain: {
