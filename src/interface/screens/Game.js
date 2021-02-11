@@ -6,12 +6,17 @@ import {WebGLRenderer} from "three";
 import Core, {globals} from "../../game/Core";
 import CameraControls from "camera-controls";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
+import { useParams } from "react-router";
 
-export default function Game() {
-
+export default function Game({ history }) {
+    let { roomId } = useParams();
+    
     const canvas = useRef(null);
     const {serverManager} = useContext(ServerManagerContext);
-
+    const onGameEnd = () => {
+        console.log("onGameEnd Called");
+        history.push(`/rooms/${roomId}/end`);
+    }
     useEffect(() => {
         if(serverManager == null || canvas == null)
             return;
@@ -32,7 +37,7 @@ export default function Game() {
         renderer.gammaFactor = 2.2;
 
         const game = new Core();
-
+        
         function resizeRendererToDisplaySize(renderer) {
             const canvas = renderer.domElement;
             const width = canvas.clientWidth;
@@ -57,7 +62,7 @@ export default function Game() {
                 game.updateRendererDisplaySize(canvas.clientWidth, canvas.clientHeight)
             }
 
-            game.render();
+            game.render(onGameEnd);
 
             requestAnimationFrame(render);
         }

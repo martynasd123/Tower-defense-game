@@ -17,9 +17,14 @@ export class CannonController extends Component {
 
   constructor(entity) {
     super(entity);
-    this.pipeMesh = entity.visual.getObjectByName('Pipe');
-    this.baseMesh = entity.visual.getObjectByName('Base');
+    this.getMeshes();
   }
+
+  getMeshes(){
+    this.pipeMesh = this.entity.visual.getObjectByName('Pipe');
+    this.baseMesh = this.entity.visual.getObjectByName('Base');
+  }
+
 
   shoot(){
     //Spawning a new projectile entity
@@ -38,6 +43,8 @@ export class CannonController extends Component {
   }
 
   update() {
+    this.getMeshes();
+
     const {inputManager} = globals;
 
     const pitch = this.getRemoteValue('pitch');
@@ -49,7 +56,7 @@ export class CannonController extends Component {
     if((this.pitch != null && this.pitch !== pitch) || (this.yaw != null && this.yaw !== yaw)){
       const cameraControlsEntity = this.entity.entityManager.findEntityByName('cameraControls')
       if(cameraControlsEntity != null){
-          const cameraControlsManager =cameraControlsEntity.getComponent(CameraControlsManager);
+          const cameraControlsManager = cameraControlsEntity.getComponent(CameraControlsManager);
           if(cameraControlsManager != null && cameraControlsManager.player === this.entity){
             cameraControlsManager.setCameraPosition(true);
           }
