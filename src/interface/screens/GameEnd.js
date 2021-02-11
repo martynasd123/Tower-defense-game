@@ -12,7 +12,7 @@ class GameEnd extends React.Component {
     };
     
     componentDidMount = async () => {
-        const response = await getRoomEndData();
+        const response = await getRoomEndData(this?.props?.match?.params?.roomId);
         console.log(response);
         this.setState({
             players: response.playerStats,

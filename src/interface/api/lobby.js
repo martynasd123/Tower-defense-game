@@ -1,6 +1,6 @@
 import { HandleHttpRequest } from "./http";
 
-const getRoomEndData = async () => HandleHttpRequest("GET", "http://localhost:2567/api/lobby/BNg-Wv6hE");
+const getRoomEndData = async (id) => HandleHttpRequest("GET", "http://localhost:2567/api/lobby/" + id);
 
 export {
     getRoomEndData,
