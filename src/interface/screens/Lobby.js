@@ -8,7 +8,6 @@ import {Button} from "react-bootstrap";
 import {SnackbarContext} from "../contexts/SnackbarProvider";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 import RoomForm from "../components/RoomForm";
-import Card from "../components/Card";
 import MainContainer from "../components/MainContainer";
 
 export default function Lobby({ history }) {

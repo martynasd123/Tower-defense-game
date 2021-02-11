@@ -44,8 +44,9 @@ export class SafeArray {
    */
   removeByPredicate(predicate) {
     this.forEach((element) => {
-      if(predicate(element))
+      if(predicate(element)) {
         this.remove(element);
+      }
     })
   }
 
@@ -75,9 +76,8 @@ export class SafeArray {
   find(predicate){
     let found = null;
     this.forEach((element) => {
-      if(predicate(element)) {
+      if(predicate(element))
         found = element;
-      }
     })
     return found;
   }

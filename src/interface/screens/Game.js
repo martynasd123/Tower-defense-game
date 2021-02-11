@@ -125,7 +125,7 @@ export default function Game({ history }) {
                         return <h2 key={player.authUser.id}>{player.authUser.username}</h2>
                 })}
             </div>
-            {bigTextVisible && <div style={{position: 'absolute', bottom: '50%', left: '50%', transform: 'translate(-50%, -50%)'}}>
+            {bigTextVisible && <div style={{position: 'absolute', bottom: '65%', left: '50%', transform: 'translate(-50%, 0%)'}}>
                 <h1 style={{color: 'white', fontSize: 80}}>{bigText}</h1>
             </div>}
             {turnTime != null && <div style={{position: 'absolute', bottom: 10, left: 10}}>
