@@ -55,7 +55,7 @@ export class CameraControlsManager extends Component {
 
     if(this.entity_to_follow == null || this.entity_to_follow !== entity){
       this.entity_to_follow = entity;
-
+      // this.entity.parent = this.entity_to_follow.visual
       //Setting camera position initially
       this.setCameraPosition(false);
     }

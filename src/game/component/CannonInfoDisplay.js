@@ -2,6 +2,8 @@ import {Component} from "../../engine/core/Component";
 import {Mesh, MeshPhongMaterial, TextGeometry, Vector3} from "three";
 import Assets from "../Assets";
 import TextSprite from "@seregpie/three.text-sprite";
+import {CameraControlsManager} from "./CameraControlsManager";
+import {CannonController} from "./CannonController";
 
 export class CannonInfoDisplay extends Component{
 
@@ -34,11 +36,18 @@ export class CannonInfoDisplay extends Component{
     update() {
         const health = this.getRemoteValue("hp")
 
-        if(this.entity.visual.getObjectByName('health_text_sprite') == null){
-            this.entity.visual.add(this.healthTextSprite)
-        }
-        if(this.entity.visual.getObjectByName('name_text_sprite') == null){
-            this.entity.visual.add(this.nameTextSprite)
+        //BAD CODE TO WORK AROUND A BAD PERFORMANCE ISSUE
+        const cameraControls = this.entity.entityManager.findEntityByName('cameraControls').getComponent(CameraControlsManager);
+        if(cameraControls.entity_to_follow != null && cameraControls.entity_to_follow.getComponent(CannonController) != null){
+            if(this.entity.visual.getObjectByName('health_text_sprite') == null){
+                this.entity.visual.add(this.healthTextSprite)
+            }
+            if(this.entity.visual.getObjectByName('name_text_sprite') == null){
+                this.entity.visual.add(this.nameTextSprite)
+            }
+        }else{
+            this.entity.visual.remove(this.healthTextSprite)
+            this.entity.visual.remove(this.nameTextSprite)
         }
 
         this.nameTextSprite.text = this.getRemoteValue("name")
