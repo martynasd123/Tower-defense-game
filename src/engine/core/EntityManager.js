@@ -3,7 +3,7 @@ import {Entity} from "./Entity";
 import {globals} from "../../game/Core";
 import Assets from "../../game/Assets";
 import {SkeletonUtils} from "three/examples/jsm/utils/SkeletonUtils";
-import {AmbientLight, Color, DirectionalLight, Mesh, MeshBasicMaterial, SphereGeometry} from "three";
+import {AmbientLight, Color, DirectionalLight, Mesh, MeshBasicMaterial, SphereGeometry, Vector3} from "three";
 
 /**
  * A wrapper class to manage a set of entities.
@@ -89,7 +89,8 @@ export class EntityManager {
       }else{
         if(entity.components != null)
           ent.syncComponents(entity.components);
-        ent.visual = this.parseRef(ent.visual)
+
+        ent.updateVisual(entity.visual);
         ent.visual.position.set(entity.position.x, entity.position.y, entity.position.z);
       }
     })

@@ -17,7 +17,7 @@ export class CannonInfoDisplay extends Component{
             text: ''
         });
         this.nameTextSprite.position.add(new Vector3(0,8,0))
-        this.entity.visual.add(this.nameTextSprite)
+        this.nameTextSprite.name = 'name_text_sprite'
 
         this.healthTextSprite = new TextSprite({
             alignment: 'center',
@@ -28,11 +28,18 @@ export class CannonInfoDisplay extends Component{
             text: ''
         });
         this.healthTextSprite.position.add(new Vector3(0,5.5,0))
-        this.entity.visual.add(this.healthTextSprite)
+        this.healthTextSprite.name = 'health_text_sprite'
     }
 
     update() {
         const health = this.getRemoteValue("hp")
+
+        if(this.entity.visual.getObjectByName('health_text_sprite') == null){
+            this.entity.visual.add(this.healthTextSprite)
+        }
+        if(this.entity.visual.getObjectByName('name_text_sprite') == null){
+            this.entity.visual.add(this.nameTextSprite)
+        }
 
         this.nameTextSprite.text = this.getRemoteValue("name")
         if(health === 0)

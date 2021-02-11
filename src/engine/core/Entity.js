@@ -28,6 +28,16 @@ export class Entity{
         .components[Object.keys(ComponentName).find((comp) => ComponentName[comp].name === componentType)][key]);
   }
 
+  updateVisual(visualName){
+    if(visualName != null && (this.currentVisual == null || this.currentVisual !== visualName)){
+      this.currentVisual = visualName;
+      this.visual.clear();
+      this.visual.position.set(0,0,0)
+      this.visual.add(this.entityManager.parseRef(visualName));
+      console.log(this.currentVisual)
+    }
+  }
+
   /**
    * Adds a component to this entity
    * @param ComponentType Type of component

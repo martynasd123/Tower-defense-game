@@ -14,8 +14,11 @@ export class CameraControlsManager extends Component {
    * @param enableTransition If true, camera is moved with a smooth transition
    */
   setCameraPosition(enableTransition) {
-    const worldPos = new Vector3();
-    const {x, y, z} = this.pipe.getWorldPosition(worldPos);
+    //Retrieving main player's cannon
+    this.pipe = this.player.visual.getObjectByName("Pipe");
+
+    const {x, y, z} = this.player.visual.getWorldPosition(new Vector3())
+
     this.cameraControls.rotateTo(this.player.visual.rotation.y + Math.PI / 2,
         -this.pipe.rotation.z + Math.PI * 0.3, enableTransition);
     this.cameraControls.setTarget(x, y, z, enableTransition);
@@ -47,9 +50,6 @@ export class CameraControlsManager extends Component {
 
     if(this.player == null || this.player !== player){
       this.player = player;
-
-      //Retrieving main player's cannon
-      this.pipe = this.player.visual.getObjectByName("Pipe");
 
       //Setting camera position initially
       this.setCameraPosition(false);
