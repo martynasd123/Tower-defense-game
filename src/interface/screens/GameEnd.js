@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import MainContainer from "../components/MainContainer";
 import LoginForm from "../components/LoginForm";
 import GuestForm from "../components/GuestForm";
-import { Redirect } from "react-router";
+import {Redirect, useParams} from "react-router";
 import { getRoomEndData } from "../api/index"
 
 class GameEnd extends React.Component {
@@ -10,10 +10,10 @@ class GameEnd extends React.Component {
         players: null,
         lobbyData: null,
     };
-    
+
     componentDidMount = async () => {
+
         const response = await getRoomEndData();
-        console.log(response);
         this.setState({
             players: response.playerStats,
             lobbyData: response.lobby_data,

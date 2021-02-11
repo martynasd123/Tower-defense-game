@@ -49,6 +49,9 @@ export class CameraControlsManager extends Component {
     const {inputManager} = globals;
     
     const entity = this.getRemoteValue("entity");
+    const maxDist = this.getRemoteValue("maxDistance");
+    if(maxDist !== this.cameraControls.maxDistance)
+      this.cameraControls.maxDistance = maxDist;
 
     if(this.entity_to_follow == null || this.entity_to_follow !== entity){
       this.entity_to_follow = entity;
@@ -62,6 +65,8 @@ export class CameraControlsManager extends Component {
     const {x, y, z} = entity.visual.position;
     if(x !== target.x || y !== target.y || z !== target.z) {
       this.cameraControls.setTarget(x, y, z, false);
+      if(this.cameraControls.distance > this.cameraControls.maxDistance)
+        this.cameraControls.distance = this.cameraControls.maxDistance
     }
 
     this.cameraControls.update(globals.deltaTime);

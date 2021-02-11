@@ -95,9 +95,11 @@ export class EntityManager {
       }
     })
 
-    this.entities.forEach((entity) => {
-      if(this.findEntityByName(entity.name) == null)
-        this.entities.removeByPredicate((el) => {return el.name === entity.name});
+    this.entities.forEach((en) => {
+      if(entities.find((ent) => ent.name === en.name) == null) {
+        const entity = this.findEntityByName(en.name)
+        this.removeEntity(entity)
+      }
     })
   }
 
@@ -110,6 +112,8 @@ export class EntityManager {
    * @param entity The entity to be removed
    */
   removeEntity(entity) {
+    if(entity.visual != null)
+      entity.visual.clear();
     this.entities.remove(entity);
   }
 
