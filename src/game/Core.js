@@ -68,7 +68,7 @@ export default function Core() {
   let renderer = null;
 
   let receivedGameState = false;
-
+  let gameEnded = false;
   this._setUpCamera = function () {
     const fov = 45;
     const aspect = 2;
@@ -91,15 +91,22 @@ export default function Core() {
       const stateParsed = JSON.parse(JSON.stringify(state)).gameState;
       entityManager.updateState(stateParsed);
       receivedGameState = true;
+      if (stateParsed?.enumState === 3 && stateParsed?.endScreenTime <= 0) {
+        gameEnded = true;
+      }
     });
 
     this._setUpCamera();
   }
 
-  this.render = function () {
+  this.render = function (onEnd) {
     if(!receivedGameState)
       return;
-
+    if (gameEnded) {
+      console.log("gameEnded = true")
+      onEnd();
+      return;
+    }
     globals.entityManager.update();
     globals.inputManager.update();
     const pressedValues = globals.inputManager.getPressedKeysValues();

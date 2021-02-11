@@ -75,10 +75,10 @@ export class EntityManager {
         const entityNew = this.createEntity(this.parseRef(entity.parent), entity.name);
 
         if(entity.visual !== null && entity.visual !== undefined){
-          entityNew.visual.add(this.parseRef(entity.visual));
+          entityNew.addVisual(this.parseRef(entity.visual));
         } else {
           // Super dumb, change this later xd
-          entityNew.visual.add(new Mesh(new SphereGeometry(0.2), new MeshBasicMaterial({color: new Color("gray")})));
+          entityNew.addVisual(new Mesh(new SphereGeometry(0.2), new MeshBasicMaterial({color: new Color("gray")})));
         }
         const { x, y, z } = entity.position;
         entityNew.visual.position.set(x, y, z)

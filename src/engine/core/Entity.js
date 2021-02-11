@@ -19,7 +19,20 @@ export class Entity{
     this.components = [];
     this.visual = new Object3D();
     this.entityManager = entityManager;
+
     parent.add(this.visual);
+  }
+
+  addVisual(visual) {
+    this.current_visual = visual;
+    this.visual.add(visual);
+  }
+
+  updateVisual(visual) {
+    this.visual.remove(this.current_visual);
+    this.visual.add(visual);
+    this.visual.
+    this.current_visual = visual;
   }
 
   getComponentStateValue(componentType, key){
