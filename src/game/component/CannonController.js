@@ -57,7 +57,7 @@ export class CannonController extends Component {
       const cameraControlsEntity = this.entity.entityManager.findEntityByName('cameraControls')
       if(cameraControlsEntity != null){
           const cameraControlsManager = cameraControlsEntity.getComponent(CameraControlsManager);
-          if(cameraControlsManager != null && cameraControlsManager.player === this.entity){
+          if(cameraControlsManager != null && cameraControlsManager.entity_to_follow === this.entity){
             cameraControlsManager.setCameraPosition(true);
           }
       }

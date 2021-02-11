@@ -14,13 +14,16 @@ export class CameraControlsManager extends Component {
    * @param enableTransition If true, camera is moved with a smooth transition
    */
   setCameraPosition(enableTransition) {
-    //Retrieving main player's cannon
-    this.pipe = this.player.visual.getObjectByName("Pipe");
 
-    const {x, y, z} = this.player.visual.getWorldPosition(new Vector3())
+    const {x, y, z} = this.entity_to_follow.visual.getWorldPosition(new Vector3())
 
-    this.cameraControls.rotateTo(this.player.visual.rotation.y + Math.PI / 2,
-        -this.pipe.rotation.z + Math.PI * 0.3, enableTransition);
+    if(this.entity_to_follow.getComponent(CannonController) != null){
+
+      //Retrieving main player's cannon
+      this.pipe = this.entity_to_follow.visual.getObjectByName("Pipe");
+      this.cameraControls.rotateTo(this.entity_to_follow.visual.rotation.y + Math.PI / 2,
+          -this.pipe.rotation.z + Math.PI * 0.3, enableTransition);
+    }
     this.cameraControls.setTarget(x, y, z, enableTransition);
   }
 
@@ -45,11 +48,11 @@ export class CameraControlsManager extends Component {
 
   update() {
     const {inputManager} = globals;
+    
+    const entity = this.getRemoteValue("entity");
 
-    const player = this.getRemoteValue("player");
-
-    if(this.player == null || this.player !== player){
-      this.player = player;
+    if(this.entity_to_follow == null || this.entity_to_follow !== entity){
+      this.entity_to_follow = entity;
 
       //Setting camera position initially
       this.setCameraPosition(false);
