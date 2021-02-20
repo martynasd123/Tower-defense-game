@@ -8,7 +8,7 @@ export const ServerManagerContext = createContext();
  */
 export function ServerManagerProvider({children}){
 
-    const [serverManager, setServerManager] = useState(new ServerManager("localhost", 2567));
+    const [serverManager, setServerManager] = useState(new ServerManager("192.168.0.110", 2567));
 
     return(
         <ServerManagerContext.Provider value={{ serverManager }}>
