@@ -7,11 +7,13 @@ import Core, {globals} from "../../game/Core";
 import CameraControls from "camera-controls";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 import { useParams } from "react-router";
+import WebcamController from "../components/WebcamController";
 
 export default function Game({ history }) {
     let { roomId } = useParams();
     
     const canvas = useRef(null);
+    const fingerCount = useRef(-1);
     const {serverManager} = useContext(ServerManagerContext);
     
     const onGameEnd = () => {
@@ -28,7 +30,7 @@ export default function Game({ history }) {
     const onRoomStateChanged = (state) => {
         const stateParsed = JSON.parse(JSON.stringify(state)).gameState;
         setPlayerTurnIndex(stateParsed.playerTurnIndex);
-        setTurnTime(stateParsed.turnTime)
+        setTurnTime(stateParsed.turnTime);
         setPlayers(stateParsed.players);
     }
 
@@ -94,7 +96,7 @@ export default function Game({ history }) {
             }
 
             game.render(onGameEnd);
-
+            game.onFingerCount(fingerCount.current);
             requestAnimationFrame(render);
         }
 
@@ -106,8 +108,15 @@ export default function Game({ history }) {
 
     }, [canvas, serverManager]);
 
+    const onFingerCount = (fCount) => {
+        fingerCount.current = fCount;
+    };
+
     return (
         <div>
+            <WebcamController 
+                onFingerCount = {onFingerCount}
+            />
             <canvas ref={canvas} style={
                 {
                     width: '100%',

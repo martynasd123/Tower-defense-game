@@ -9,6 +9,7 @@ import {SnackbarContext} from "../contexts/SnackbarProvider";
 import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 import RoomForm from "../components/RoomForm";
 import MainContainer from "../components/MainContainer";
+import WebcamController from "../components/WebcamController";
 
 export default function Lobby({ history }) {
 

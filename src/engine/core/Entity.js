@@ -47,7 +47,6 @@ export class Entity{
       this.visual.clear();
       this.visual.position.set(0,0,0)
       this.visual.add(this.entityManager.parseRef(visualName));
-      console.log(this.currentVisual)
     }
   }
 

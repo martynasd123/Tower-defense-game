@@ -30,10 +30,13 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.12.10",
     "@seregpie/three.text-sprite": "^3.2.0",
+    "@tensorflow-models/handpose": "0.0.7",
+    "@tensorflow/tfjs": "^3.0.0",
     "bootstrap": "^4.6.0",
     "camera-controls": "^1.25.3",
     "colyseus": "^0.14.6",
     "colyseus.js": "^0.14.1",
+    "fingerpose": "0.0.2",
     "history": "^4.10.1",
     "i": "^0.3.6",
     "npm": "^7.5.3",
@@ -43,6 +46,7 @@
     "react-icons": "^4.1.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
+    "react-webcam": "^5.2.3",
     "style-loader": "^2.0.0",
     "three": "^0.123.0",
     "three-ui": "^1.1.1"
