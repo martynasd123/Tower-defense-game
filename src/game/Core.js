@@ -69,7 +69,7 @@ export let globals = {
 };
 
 let moveTracked = -1;
-let moveTrackedTimes = 0;
+let moveTrackedTimes = new Date().getTime();
 
 export default function Core() {
 
@@ -129,21 +129,19 @@ export default function Core() {
   }
   
   this.onFingerCount = function (fingerCount) {
-    console.log(fingerCount);
     let moveIndex = this.getMoveIndex(fingerCount);
-    if (moveTracked === moveIndex) {
-      moveTrackedTimes++;
-    } else {
-      moveTrackedTimes = 0;
+    if (moveTracked !== moveIndex) {
+      moveTrackedTimes = new Date().getTime();
       moveTracked = moveIndex;
     }
-    if (moveTrackedTimes > 40 && moveIndex !== -1) {
+    // after 1 sec make a move
+    if (new Date().getTime() - moveTrackedTimes > 1000 && moveIndex !== -1) {
       globals.serverManager.send("player_input", [moveIndex]);
     }
   
   }
 
-  this.render = function (onEnd) {
+  this.render = function (onEnd, controller) {
     if(!receivedGameState)
       return;
     if (gameEnded) {
@@ -153,7 +151,10 @@ export default function Core() {
     }
     globals.entityManager.update();
     globals.inputManager.update();
-    const pressedValues = globals.inputManager.getPressedKeysValues();
+    if (controller === 0) {
+      const pressedValues = globals.inputManager.getPressedKeysValues();
+      globals.serverManager.send("player_input", pressedValues);
+    }
     renderer.render(globals.scene, globals.camera);
   }
 

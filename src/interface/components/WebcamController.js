@@ -18,10 +18,16 @@ const fingerJoints = {
 const WebcamController = ({ onFingerCount }) => {
     const webcamRef = useRef(null);
     const canvasRef = useRef(null);
+    const fCount = useRef(-1);
+
+    const sendFingerCount = () => {
+      onFingerCount(fCount.current);
+    };
 
     const runHandpose = async () => {
         const nn = await handpose.load();
         setInterval(() => detect(nn), 100);
+        setInterval(sendFingerCount, 10);
     };
 
     const getFingerUpCount = async (predictions) => {
@@ -111,7 +117,7 @@ const WebcamController = ({ onFingerCount }) => {
             const ctx = canvasRef.current.getContext("2d");
             drawHand(hand, ctx);
             const fingerCount = await getFingerUpCount(hand);
-            onFingerCount(fingerCount);
+            fCount.current = fingerCount;
         }
     };
 

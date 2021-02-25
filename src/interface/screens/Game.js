@@ -9,7 +9,7 @@ import {ServerManagerContext} from "../contexts/ServerManagerProvider";
 import { useParams } from "react-router";
 import WebcamController from "../components/WebcamController";
 
-export default function Game({ history }) {
+export default function Game({ history, }) {
     let { roomId } = useParams();
     
     const canvas = useRef(null);
@@ -26,12 +26,14 @@ export default function Game({ history }) {
     const [players, setPlayers] = useState([]);
     const [bigTextVisible, setBigTextVisible] = useState(false)
     const [bigText, setBigText] = useState("");
+    const controller = useRef(null);
 
     const onRoomStateChanged = (state) => {
         const stateParsed = JSON.parse(JSON.stringify(state)).gameState;
         setPlayerTurnIndex(stateParsed.playerTurnIndex);
         setTurnTime(stateParsed.turnTime);
         setPlayers(stateParsed.players);
+        controller.current = (JSON.parse(JSON.stringify(state)).controllerType);
     }
 
     const showBigText = (text) => {
@@ -95,7 +97,7 @@ export default function Game({ history }) {
                 game.updateRendererDisplaySize(canvas.clientWidth, canvas.clientHeight)
             }
 
-            game.render(onGameEnd);
+            game.render(onGameEnd, controller.current);
             game.onFingerCount(fingerCount.current);
             requestAnimationFrame(render);
         }
@@ -114,9 +116,11 @@ export default function Game({ history }) {
 
     return (
         <div>
+            {controller.current === 1 && 
             <WebcamController 
                 onFingerCount = {onFingerCount}
-            />
+            /> 
+            }
             <canvas ref={canvas} style={
                 {
                     width: '100%',

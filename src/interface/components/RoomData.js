@@ -24,7 +24,11 @@ class RoomData extends React.Component {
                         <div className="font-weight-bold">Map</div>
                         <div>{roomData?.map_name}</div>
                     </li>
-
+                    <li className="list-group-item">
+                        <div className="font-weight-bold">Controller</div>
+                        <div>{roomData?.controller}</div>
+                    </li>
+                    <li/>
                 </ul>
                 <div className="form-group">
                     <Button

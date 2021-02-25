@@ -24,6 +24,7 @@ export default function Room({ location, history }){
         setRoomState({
             title: state?.title,
             max_players: state?.maxPlayers,
+            controller: state?.controllerType,
             creator_username: "Petras"
         });
     };
@@ -90,7 +91,8 @@ export default function Room({ location, history }){
                                     title: roomState?.title,
                                     max_players: roomState?.max_players,
                                     map_name: "Badwater",
-                                    creator_username: roomState?.creator_username
+                                    creator_username: roomState?.creator_username,
+                                    controller: roomState?.controller === 0 ? "Keyboard" : "Webcam"
                                 }
                             }
                             onStartGame={onStartGame}
